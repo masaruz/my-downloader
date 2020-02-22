@@ -5,4 +5,6 @@ export interface IOptions {
 
 export interface IDownloader {
   download(options: IOptions): void
+  isDone(): boolean
+  progress(): number
 }

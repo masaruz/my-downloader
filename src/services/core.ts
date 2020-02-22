@@ -1,3 +1,4 @@
+import { MultiBar } from 'cli-progress'
 import { IDownloader, IOptions } from './interfaces'
 
 class Downloader {
