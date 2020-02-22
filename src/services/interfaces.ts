@@ -6,5 +6,7 @@ export interface IOptions {
 export interface IDownloader {
   download(options: IOptions): Promise<void>
   isCompleted(): boolean
+  size(): number
+  on(event: 'start', listener: () => void): void
   on(event: 'progress', listener: (progress: number) => void): void
 }

@@ -1,4 +1,4 @@
-import { MultiBar, Presets } from 'cli-progress'
+import { MultiBar, Presets, SingleBar } from 'cli-progress'
 import { IDownloader, IOptions } from './interfaces'
 
 const multibar = new MultiBar({
@@ -14,8 +14,16 @@ class Downloader {
   }
 
   download(options: IOptions) {
-    this._module.download(options).catch(e => { throw e })
-    this._module.on('progress', progress => console.log(progress))
+    let b1: SingleBar
+    this._module.download(options).then(() => { process.exit(0) }).catch(e => { throw e })
+    this._module.on('start', () => {
+      b1 = multibar.create(this._module.size(), 0, 'test')
+    })
+    this._module.on('progress', progress => {
+      if (b1) {
+        b1.update(progress)
+      }
+    })
   }
 }
 
