@@ -1,4 +1,4 @@
-import { IDownloader } from './interfaces'
+import { IDownloader, IOptions } from './interfaces'
 
 class Downloader {
   private _module: IDownloader
@@ -7,8 +7,8 @@ class Downloader {
     this._module = module
   }
 
-  download(url: string, dest: string) {
-    this._module.download(url)
+  download(options: IOptions) {
+    this._module.download(options)
   }
 }
 
