@@ -3,8 +3,8 @@ import { ERROR, BASE } from '@libs/constants'
 import { existsSync, removeSync } from 'fs-extra'
 
 const dir = `${BASE.PATH}_ftp`
-const source1 = { url: 'ftp://speedtest.tele2.net/1KB.zip', dest: dir }
-const source2 = { url: 'ftp://speedtest.tele2.net/1MB.zip', dest: dir }
+const source1 = { url: 'ftp://speedtest.tele2.net/1KB.zip', dir }
+const source2 = { url: 'ftp://speedtest.tele2.net/1MB.zip', dir }
 
 afterAll(() => {
   removeSync(dir)

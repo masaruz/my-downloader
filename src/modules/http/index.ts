@@ -24,7 +24,7 @@ class Main extends Base {
   download(options: IOptions): Promise<void> {
     return new Promise((resolve, rejects) => {
       // temporary destination until download finish
-      this._dest = generateTempFilename()
+      this._dest = generateTempFilename(options.dir)
       if (!options.url) {
         throw new Error(ERROR.URL_IS_INVALID)
       }

@@ -19,7 +19,8 @@
     "multi-progress": "^2.0.0",
     "node-fetch": "^2.6.0",
     "progress": "^2.0.3",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.1.0",
@@ -31,6 +32,7 @@
     "@types/node": "^13.7.4",
     "@types/node-fetch": "^2.5.4",
     "@types/uuid": "^3.4.7",
+    "@types/yargs": "^15.0.3",
     "jest": "^25.1.0",
     "nodemon": "^2.0.2",
     "ts-jest": "^25.2.1",

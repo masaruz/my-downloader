@@ -1,9 +1,10 @@
 import { v4 } from 'uuid'
 import { parse } from 'url'
 import { dirname, basename } from 'path'
-import { removeSync, existsSync, unlinkSync, mkdirSync } from 'fs-extra'
+import { removeSync, existsSync, unlinkSync, mkdirSync, readFileSync } from 'fs-extra'
 
 import { ERROR, BASE } from './constants'
+import { IOptions } from '@services/interfaces'
 
 /**
  * delete file in synchronously
@@ -29,8 +30,8 @@ export function ensureDirectoryExistence(pathname: string): boolean {
   mkdirSync(dir)
 }
 
-export function generateTempFilename() {
-  const dir = `${BASE.PATH}/${v4()}`
+export function generateTempFilename(basepath?: string) {
+  const dir = `${basepath ?? BASE.PATH}/.${v4()}`
   ensureDirectoryExistence(dir)
   return dir
 }
@@ -80,4 +81,14 @@ export function getDestinationFromURL(url: string, dest?: string): string {
   }
   ensureDirectoryExistence(result)
   return result
+}
+
+export function validateFileInput(pathname: string): IOptions[] {
+  try {
+    const data = readFileSync(pathname)
+    const json = JSON.parse(data.toString())
+    return json as IOptions[]
+  } catch (e) {
+    throw e
+  }
 }
