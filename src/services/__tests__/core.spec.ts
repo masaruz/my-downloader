@@ -16,7 +16,7 @@ test('check all input are not supported protocols', async () => {
   c.register(modules)
   try {
     await c.start([
-      { url: 'xxx://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4', dest: '/Users/_/Downloads' },
+      { url: 'xxx://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4', dir: '/Users/_/Downloads' },
       { url: 'sss://file-examples.com/wp-content/uploads/2017/11/file_example_WAV_10MG.wav' },
     ])
     throw new Error()
@@ -30,7 +30,7 @@ test('check some input are supported protocols', async () => {
   c.register(modules)
   try {
     await c.start([
-      { url: 'xxx://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4', dest: '/Users/_/Downloads' },
+      { url: 'xxx://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4', dir: '/Users/_/Downloads' },
       { url: 'sss://file-examples.com/wp-content/uploads/2017/11/file_example_WAV_10MG.wav' },
       source1,
     ])

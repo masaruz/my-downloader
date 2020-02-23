@@ -43,9 +43,9 @@ class Main extends Base {
             if (err) throw err
             stream.once('close', () => {
               c.end()
-              copyFileSync(this._dest, getDestinationFromURL(options.url, options.dest))
+              copyFileSync(this._dest, getDestinationFromURL(options.url, options.dir))
               this._completed = true
-              this._dest = options.dest
+              this._dest = options.dir
               resolve()
             })
             stream.pipe(createWriteStream(this._dest))
