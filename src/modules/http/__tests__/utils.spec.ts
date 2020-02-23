@@ -1,4 +1,4 @@
-import { ERROR } from '../constants'
+import { ERROR } from '@libs/constants'
 import { getDestinationFromURL } from '../utils'
 
 test('throw error when input is invalid', () => {

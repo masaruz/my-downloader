@@ -14,7 +14,7 @@ class Downloader {
     this._module = module
   }
 
-  download(options: IOptions[]) {
+  async download(options: IOptions[]) {
     const promises = this._module.reduce((p, c) => {
       return p.concat(options.map(opt => new Promise((resolve, reject) => {
         // create a instance
@@ -22,10 +22,13 @@ class Downloader {
         try {
           validateURL(mod.supportedProtocols(), opt.url)
           let b: SingleBar
-          mod.download(opt).then(() => {
-            b.update(mod.size())
-            resolve()
-          }).catch(e => { throw e })
+          mod.download(opt)
+            // when download finish
+            .then(() => {
+              b.update(mod.size())
+              resolve()
+              // if any error
+            }).catch(e => { throw e })
           mod.on('start', () => {
             b = multibar.create(mod.size(), 0, 'test')
           })
@@ -38,11 +41,14 @@ class Downloader {
           reject(e)
         }
       })))
-    }, [])
-    Promise.all(promises).then(() => {
+    }, [] as Promise<void>[])
+    try {
+      const results = await Promise.all(promises)
       clean()
       console.log('done')
-    })
+    } catch (e) {
+      throw e
+    }
   }
 }
 
@@ -56,4 +62,4 @@ process.on('SIGINT', () => {
   clean()
 })
 
-export default new Downloader()
+export default Downloader

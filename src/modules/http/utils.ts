@@ -1,7 +1,7 @@
 import { parse } from 'url'
 import { basename } from 'path'
 
-import { ERROR } from './constants'
+import { ERROR } from '@libs/constants'
 
 /**
  * resolve filename according to url
@@ -11,7 +11,7 @@ import { ERROR } from './constants'
  */
 export function getDestinationFromURL(url: string, dest?: string) {
   if (!url) {
-    throw ERROR.URL_IS_INVALID
+    throw new Error(ERROR.URL_IS_INVALID)
   }
   const parsed = parse(url)
   let filename = basename(parsed.hostname)

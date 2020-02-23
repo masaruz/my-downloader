@@ -45,13 +45,13 @@ export function clean() {
  */
 export function validateURL(protocols: string[], url: string) {
   if (!url) {
-    throw ERROR.URL_IS_INVALID
+    throw new Error(ERROR.URL_IS_INVALID)
   }
   const parsed = parse(url)
   if (!protocols.includes(parsed.protocol)) {
-    throw ERROR.PROTOCOL_NOT_SUPPORTED
+    throw new Error(ERROR.PROTOCOL_NOT_SUPPORTED)
   }
   if (!parsed.hostname || !parsed.host) {
-    throw ERROR.URL_IS_INVALID
+    throw new Error(ERROR.URL_IS_INVALID)
   }
 }

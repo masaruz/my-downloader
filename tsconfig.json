@@ -17,6 +17,9 @@
       "@modules/*": [
         "modules/*"
       ],
+      "@modules": [
+        "modules"
+      ],
       "@services/*": [
         "services/*"
       ],
