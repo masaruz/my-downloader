@@ -4,23 +4,6 @@ import { basename } from 'path'
 import { ERROR } from './constants'
 
 /**
- * throw some errors if url is not valid for this module
- * @param url 
- */
-export function validateURL(url: string) {
-  if (!url) {
-    throw ERROR.URL_IS_INVALID
-  }
-  const parsed = parse(url)
-  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-    throw ERROR.PROTOCOL_NOT_SUPPORTED
-  }
-  if (!parsed.hostname || !parsed.host) {
-    throw ERROR.URL_IS_INVALID
-  }
-}
-
-/**
  * resolve filename according to url
  * if destination is not provide then use process dir
  * @param url 

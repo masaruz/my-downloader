@@ -1,6 +1,6 @@
 import { MultiBar, Presets, SingleBar } from 'cli-progress'
 import { IDownloader, IOptions } from './interfaces'
-import { clean } from '@libs/utils'
+import { clean, validateURL } from '@libs/utils'
 
 const multibar = new MultiBar({
   clearOnComplete: false,
@@ -8,24 +8,40 @@ const multibar = new MultiBar({
 }, Presets.shades_grey)
 
 class Downloader {
-  private _module: IDownloader
+  private _module: IDownloader[]
 
-  register(module: IDownloader) {
+  register(module: any) {
     this._module = module
   }
 
-  download(options: IOptions) {
-    let b1: SingleBar
-    this._module.download(options).then(() => {
-      b1.update(this._module.size())
-    }).catch(e => { throw e })
-    this._module.on('start', () => {
-      b1 = multibar.create(this._module.size(), 0, 'test')
-    })
-    this._module.on('progress', progress => {
-      if (b1) {
-        b1.update(progress)
-      }
+  download(options: IOptions[]) {
+    const promises = this._module.reduce((p, c) => {
+      return p.concat(options.map(opt => new Promise((resolve, reject) => {
+        // create a instance
+        const mod = c.factoryCreate()
+        try {
+          validateURL(mod.supportedProtocols(), opt.url)
+          let b: SingleBar
+          mod.download(opt).then(() => {
+            b.update(mod.size())
+            resolve()
+          }).catch(e => { throw e })
+          mod.on('start', () => {
+            b = multibar.create(mod.size(), 0, 'test')
+          })
+          mod.on('progress', progress => {
+            if (b) {
+              b.update(progress)
+            }
+          })
+        } catch (e) {
+          reject(e)
+        }
+      })))
+    }, [])
+    Promise.all(promises).then(() => {
+      clean()
+      console.log('done')
     })
   }
 }

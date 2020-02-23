@@ -1,11 +1,10 @@
 import fetch from 'node-fetch'
-import { v4 } from 'uuid'
-import { createWriteStream, renameSync, statSync } from 'fs'
+import { createWriteStream, copyFileSync, statSync } from 'fs'
 
 import { IDownloader, IOptions } from '@services/interfaces'
-import { removeFile, ensureDirectoryExistence, generateTempFilename } from '@libs/utils'
+import { removeFile, generateTempFilename } from '@libs/utils'
 
-import { validateURL, getDestinationFromURL } from './utils'
+import { getDestinationFromURL } from './utils'
 
 class Main implements IDownloader {
   private _start: boolean
@@ -17,6 +16,14 @@ class Main implements IDownloader {
 
   constructor() {
     this._size = -1
+  }
+
+  factoryCreate(): IDownloader {
+    return new Main()
+  }
+
+  supportedProtocols(): string[] {
+    return ['http:', 'https:']
   }
 
   size(): number {
@@ -60,7 +67,6 @@ class Main implements IDownloader {
       // temporary destination until download finish
       this._dest = generateTempFilename()
       try {
-        validateURL(options.url)
         // request for downloading
         fetch(options.url).then(res => {
           const stream = createWriteStream(this._dest)
@@ -75,7 +81,7 @@ class Main implements IDownloader {
             }
           })
           stream.on('finish', () => {
-            renameSync(this._dest, getDestinationFromURL(options.url, options.dest))
+            copyFileSync(this._dest, getDestinationFromURL(options.url, options.dest))
             this._dest = options.dest
             this._completed = true
             resolve()
@@ -90,4 +96,4 @@ class Main implements IDownloader {
   }
 }
 
-export default new Main()
+export default Main

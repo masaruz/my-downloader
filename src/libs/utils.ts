@@ -1,8 +1,9 @@
 import { v4 } from 'uuid'
+import { parse } from 'url'
 import { dirname } from 'path'
 import { removeSync, existsSync, unlinkSync, mkdirSync } from 'fs-extra'
 
-const BASE_PATH = '.tmp'
+import { ERROR, BASE } from './constants'
 
 /**
  * delete file in synchronously
@@ -29,11 +30,28 @@ export function ensureDirectoryExistence(pathname: string): boolean {
 }
 
 export function generateTempFilename() {
-  const dir = `${BASE_PATH}/${v4()}`
+  const dir = `${BASE.PATH}/${v4()}`
   ensureDirectoryExistence(dir)
   return dir
 }
 
 export function clean() {
-  removeSync(BASE_PATH)
+  removeSync(BASE.PATH)
+}
+
+/**
+ * throw some errors if url is not valid for this module
+ * @param url 
+ */
+export function validateURL(protocols: string[], url: string) {
+  if (!url) {
+    throw ERROR.URL_IS_INVALID
+  }
+  const parsed = parse(url)
+  if (!protocols.includes(parsed.protocol)) {
+    throw ERROR.PROTOCOL_NOT_SUPPORTED
+  }
+  if (!parsed.hostname || !parsed.host) {
+    throw ERROR.URL_IS_INVALID
+  }
 }
