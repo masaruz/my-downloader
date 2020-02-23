@@ -3,7 +3,7 @@ import { v4 } from 'uuid'
 import { createWriteStream, renameSync, statSync } from 'fs'
 
 import { IDownloader, IOptions } from '@services/interfaces'
-import { removeFile } from '@libs/utils'
+import { removeFile, ensureDirectoryExistence, generateTempFilename } from '@libs/utils'
 
 import { validateURL, getDestinationFromURL } from './utils'
 
@@ -58,7 +58,7 @@ class Main implements IDownloader {
   async download(options: IOptions): Promise<void> {
     return new Promise((resolve, rejects) => {
       // temporary destination until download finish
-      this._dest = `.${v4()}`
+      this._dest = generateTempFilename()
       try {
         validateURL(options.url)
         // request for downloading

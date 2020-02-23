@@ -1,5 +1,6 @@
 import { MultiBar, Presets, SingleBar } from 'cli-progress'
 import { IDownloader, IOptions } from './interfaces'
+import { clean } from '@libs/utils'
 
 const multibar = new MultiBar({
   clearOnComplete: false,
@@ -15,7 +16,9 @@ class Downloader {
 
   download(options: IOptions) {
     let b1: SingleBar
-    this._module.download(options).then(() => { process.exit(0) }).catch(e => { throw e })
+    this._module.download(options).then(() => {
+      b1.update(this._module.size())
+    }).catch(e => { throw e })
     this._module.on('start', () => {
       b1 = multibar.create(this._module.size(), 0, 'test')
     })
@@ -26,5 +29,15 @@ class Downloader {
     })
   }
 }
+
+process.on('exit', () => {
+  console.log('program exit !')
+  clean()
+})
+
+process.on('SIGINT', () => {
+  console.log('program SIGINT !')
+  clean()
+})
 
 export default new Downloader()

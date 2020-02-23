@@ -20,7 +20,13 @@ export function validateURL(url: string) {
   }
 }
 
-export function getDestinationFromURL(url: string, dest: string) {
+/**
+ * resolve filename according to url
+ * if destination is not provide then use process dir
+ * @param url 
+ * @param dest 
+ */
+export function getDestinationFromURL(url: string, dest?: string) {
   if (!url) {
     throw ERROR.URL_IS_INVALID
   }
