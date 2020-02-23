@@ -16,33 +16,35 @@ class Downloader {
 
   async download(options: IOptions[]) {
     const promises = this._module.reduce((p, c) => {
-      return p.concat(options.map(opt => new Promise((resolve, reject) => {
-        // create a instance
-        const mod = c.factoryCreate()
-        try {
-          validateURL(mod.supportedProtocols(), opt.url)
-          let b: SingleBar
-          mod.download(opt)
-            // when download finish
-            .then(() => {
+      return p.concat(options.map(opt =>
+        // create each promise for each downloading 
+        new Promise((resolve, reject) => {
+          // create a instance
+          const mod = c.factoryCreate()
+          try {
+            validateURL(mod.supportedProtocols(), opt.url)
+            let b: SingleBar
+            mod.download(opt)
+              // when download finish
+              .then(() => {
+                if (b) {
+                  b.update(mod.size())
+                }
+                resolve()
+                // if any error
+              }).catch(e => { throw e })
+            mod.on('start', () => {
+              b = multibar.create(mod.size(), 0, 'test')
+            })
+            mod.on('progress', progress => {
               if (b) {
-                b.update(mod.size())
+                b.update(progress)
               }
-              resolve()
-              // if any error
-            }).catch(e => { throw e })
-          mod.on('start', () => {
-            b = multibar.create(mod.size(), 0, 'test')
-          })
-          mod.on('progress', progress => {
-            if (b) {
-              b.update(progress)
-            }
-          })
-        } catch (e) {
-          reject(e)
-        }
-      })))
+            })
+          } catch (e) {
+            reject(e)
+          }
+        })))
     }, [] as Promise<void>[])
     try {
       await Promise.all(promises)
