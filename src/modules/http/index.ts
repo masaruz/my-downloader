@@ -24,7 +24,7 @@ class Main extends Base {
   download(options: IOptions): Promise<void> {
     return new Promise((resolve, rejects) => {
       // temporary destination until download finish
-      this._dest = generateTempFilename(options.dir)
+      this._dest = generateTempFilename()
       if (!options.url) {
         throw new Error(ERROR.URL_IS_INVALID)
       }
@@ -50,7 +50,7 @@ class Main extends Base {
         })
         stream.on('error', e => {
           // tslint:disable-next-line: no-console
-          console.warn(e)
+          console.warn(`${this.name} is failed to download`)
         })
       }).catch(e => {
         // remove file if something wrong happend

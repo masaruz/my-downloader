@@ -54,7 +54,7 @@ class Downloader {
               .then(() => {
                 if (b) {
                   // for ensure 100% completed
-                  b.tick(mod.size())
+                  b.tick(b.total)
                 }
                 resolve()
                 // if any error

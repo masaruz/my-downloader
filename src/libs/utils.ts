@@ -30,8 +30,8 @@ export function ensureDirectoryExistence(pathname: string): boolean {
   mkdirSync(dir)
 }
 
-export function generateTempFilename(basepath?: string) {
-  const dir = `${basepath ?? BASE.PATH}/.${v4()}`
+export function generateTempFilename() {
+  const dir = `${BASE.PATH}/.${v4()}`
   ensureDirectoryExistence(dir)
   return dir
 }

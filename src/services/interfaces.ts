@@ -1,6 +1,8 @@
 export interface IOptions {
   url: string, // source of file
   dir?: string, // destination of this file, might be local disk
+  username?: string,
+  password?: string,
 }
 
 export interface IDownloader {

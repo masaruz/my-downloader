@@ -26,7 +26,7 @@ class Main extends Base {
   download(options: IOptions): Promise<void> {
     return new Promise((resolve, rejects) => {
       // temporary destination until download finish
-      this._dest = generateTempFilename(options.dir)
+      this._dest = generateTempFilename()
       if (!options.url) {
         throw new Error(ERROR.URL_IS_INVALID)
       }
@@ -51,7 +51,14 @@ class Main extends Base {
             stream.pipe(createWriteStream(this._dest))
           })
         })
-        c.connect({ host: url.host })
+        c.on('error', e => {
+          console.warn(`${this.name} is failed`)
+        })
+        c.connect({
+          host: url.host,
+          user: options.username,
+          password: options.password,
+        })
       } catch (e) {
         rejects(e)
       }

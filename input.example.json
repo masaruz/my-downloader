@@ -1,19 +1,34 @@
 [
   {
     "url": "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4",
-    "dir": "/Users/stamp/Downloads"
+    "dir": ".tmp"
   },
   {
-    "url": "https://file-examples.com/wp-content/uploads/2017/11/file_example_WAV_10MG.wav"
+    "url": "https://file-examples.com/wp-content/uploads/2017/11/file_example_WAV_10MG.wav",
+    "dir": ".tmp"
   },
   {
     "url": "ftp://speedtest.tele2.net/1KB.zip",
-    "dir": "/Users/stamp/Downloads/"
+    "dir": ".tmp"
   },
   {
-    "url": "ftp://speedtest.tele2.net/1GB.zip"
+    "url": "ftp://speedtest.tele2.net/1GB.zip",
+    "dir": ".tmp"
   },
   {
-    "url": "http://speedtest.tele2.net/1GB.zip"
+    "url": "http://speedtest.tele2.net/1GB.zip",
+    "dir": ".tmp"
+  },
+  {
+    "url": "ftp://localhost/test.txt",
+    "username": "bob",
+    "password": "12345",
+    "dir": ".tmp"
+  },
+  {
+    "url": "ftp://localhost/test.txt",
+    "username": "bob",
+    "password": "123",
+    "dir": ".tmp"
   }
 ]
