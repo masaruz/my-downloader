@@ -31,6 +31,7 @@ class Main extends Base {
         if (!options.url) {
           throw new Error(ERROR.URL_IS_INVALID)
         }
+        this.name = options.url
         const url = parse(options.url)
         const c = new Client()
         c.on('ready', () => {

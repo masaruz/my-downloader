@@ -1,20 +1,27 @@
-import fetch from 'node-fetch'
-import { createWriteStream, copyFileSync, statSync } from 'fs'
+import { statSync } from 'fs'
 
 import { IDownloader, IOptions } from '@services/interfaces'
-import { removeFile, generateTempFilename, getDestinationFromURL } from '@libs/utils'
-import { ERROR } from '@libs/constants'
 
 class Main implements IDownloader {
+
   protected _start: boolean
   protected _completed: boolean
   protected _size: number
   protected _dest: string
+  protected _name: string
 
   protected _startCallback: () => void
 
   constructor() {
     this._size = -1
+  }
+
+  get name(): string {
+    return this._name
+  }
+
+  set name(n: string) {
+    this._name = n
   }
 
   factoryCreate(): IDownloader {

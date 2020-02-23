@@ -4,6 +4,7 @@ import { clean, validateURL } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 const multibar = new MultiBar({
+  format: '{source} | {bar} | {percentage}% || {value}/{total} B',
   clearOnComplete: false,
   hideCursor: true,
 }, Presets.shades_grey)
@@ -15,7 +16,7 @@ class Downloader {
     this._module = module
   }
 
-  async download(options: IOptions[]) {
+  async start(options: IOptions[]) {
     const promises = this._module.reduce((p, c) => {
       return p.concat(options.map(opt =>
         // create each promise for each downloading 
@@ -35,11 +36,11 @@ class Downloader {
                 // if any error
               }).catch(e => { throw e })
             mod.on('start', () => {
-              b = multibar.create(mod.size(), 0, 'test')
+              b = multibar.create(mod.size(), 0, { source: '' })
             })
             mod.on('progress', progress => {
               if (b) {
-                b.update(progress)
+                b.update(progress, { source: mod.name })
               }
             })
           } catch (e) {

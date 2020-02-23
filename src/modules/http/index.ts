@@ -28,6 +28,7 @@ class Main extends Base {
       if (!options.url) {
         throw new Error(ERROR.URL_IS_INVALID)
       }
+      this.name = options.url
       // request for downloading
       fetch(options.url).then(res => {
         const stream = createWriteStream(this._dest)
@@ -46,6 +47,9 @@ class Main extends Base {
           this._dest = options.dest
           this._completed = true
           resolve()
+        })
+        stream.on('error', e => {
+          throw e
         })
       }).catch(e => {
         // remove file if something wrong happend
