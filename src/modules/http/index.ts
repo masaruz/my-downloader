@@ -1,66 +1,24 @@
 import fetch from 'node-fetch'
 import { createWriteStream, copyFileSync, statSync } from 'fs'
 
+import Base from '../base'
+
 import { IDownloader, IOptions } from '@services/interfaces'
-import { removeFile, generateTempFilename } from '@libs/utils'
+import { removeFile, generateTempFilename, getDestinationFromURL } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
-import { getDestinationFromURL } from './utils'
-
-class Main implements IDownloader {
-  private _start: boolean
-  private _completed: boolean
-  private _size: number
-  private _dest: string
-
-  private _startCallback: () => void
-
+class Main extends Base {
   constructor() {
+    super()
     this._size = -1
-  }
-
-  factoryCreate(): IDownloader {
-    return new Main()
   }
 
   supportedProtocols(): string[] {
     return ['http:', 'https:']
   }
 
-  size(): number {
-    return this._size
-  }
-
-  isCompleted(): boolean {
-    return this._completed
-  }
-
-  on(event: 'start' | 'progress', listener: (progress?: number) => void): void {
-    switch (event) {
-      case 'start':
-        this._startCallback = listener
-        break
-      case 'progress':
-        // set interval to call listener
-        const interval = setInterval(() => {
-          if (this._startCallback && this._size > 0 && !this._start) {
-            this._startCallback()
-            // no call twice
-            this._start = true
-          }
-          try {
-            listener(statSync(this._dest).size)
-          } catch (e) {
-            listener(-1)
-          }
-          if (this._completed) {
-            // if completed then send 100% to listener
-            listener(this._size)
-            clearInterval(interval)
-          }
-        }, 100)
-        break
-    }
+  factoryCreate(): IDownloader {
+    return new Main()
   }
 
   download(options: IOptions): Promise<void> {
@@ -78,7 +36,7 @@ class Main implements IDownloader {
         // start write stream
         res.body.pipe(stream)
         stream.on('close', () => {
-          // this process is closed unproperly
+          // if process is closed unproperly
           if (!this._completed) {
             removeFile(this._dest)
           }

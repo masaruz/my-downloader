@@ -1,6 +1,7 @@
 import { MultiBar, Presets, SingleBar } from 'cli-progress'
 import { IDownloader, IOptions } from './interfaces'
 import { clean, validateURL } from '@libs/utils'
+import { ERROR } from '@libs/constants'
 
 const multibar = new MultiBar({
   clearOnComplete: false,
@@ -42,7 +43,12 @@ class Downloader {
               }
             })
           } catch (e) {
-            reject(e)
+            // TODO: do nothing when protocol not support 
+            if (e.message === ERROR.PROTOCOL_NOT_SUPPORTED) {
+              resolve()
+            } else {
+              reject(e)
+            }
           }
         })))
     }, [] as Promise<void>[])
@@ -62,7 +68,7 @@ process.on('exit', () => {
 
 process.on('SIGINT', () => {
   console.log('program SIGINT !')
-  clean()
+  process.exit(0)
 })
 
 export default Downloader

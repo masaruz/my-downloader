@@ -1,5 +1,5 @@
 import { existsSync, removeSync, mkdirSync } from 'fs-extra'
-import { ensureDirectoryExistence, validateURL } from '../utils'
+import { ensureDirectoryExistence, validateURL, getDestinationFromURL } from '../utils'
 import { ERROR } from '../constants'
 
 const BASE_PATH = './util_spec'
@@ -52,4 +52,18 @@ test('url is correct format', () => {
   expect(() => validateURL(['ws:', 'wss:'], 'wss://example.com/hello?a=1&b=2')).not.toThrow()
   expect(() => validateURL(['ftp:', 'sftp:'], 'ftp://example.com/hello?a=1&b=2')).not.toThrow()
   expect(() => validateURL(['ftp:', 'sftp:'], 'sftp://example.com/hello?a=1&b=2')).not.toThrow()
+})
+
+
+test('throw error when input is invalid', () => {
+  expect(() => getDestinationFromURL('', '')).toThrowError(ERROR.URL_IS_INVALID)
+  expect(() => getDestinationFromURL(null, null)).toThrowError(ERROR.URL_IS_INVALID)
+})
+
+test('handle input properly', () => {
+  expect(getDestinationFromURL('https://example.com/hello.png', '')).toBe(`${process.cwd()}/hello.png`)
+  expect(getDestinationFromURL('https://example.com/hello.png', null)).toBe(`${process.cwd()}/hello.png`)
+  expect(getDestinationFromURL('https://example.com/hello.png', 'example_dir')).toBe(`example_dir/hello.png`)
+  expect(getDestinationFromURL('https://example.com', 'example_dir')).toBe(`example_dir/example.com`)
+  expect(getDestinationFromURL('https://example.com', null)).toBe(`${process.cwd()}/example.com`)
 })
