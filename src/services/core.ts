@@ -43,7 +43,7 @@ class Downloader {
       })))
     }, [] as Promise<void>[])
     try {
-      const results = await Promise.all(promises)
+      await Promise.all(promises)
       clean()
       console.log('done')
     } catch (e) {

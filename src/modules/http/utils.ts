@@ -2,6 +2,7 @@ import { parse } from 'url'
 import { basename } from 'path'
 
 import { ERROR } from '@libs/constants'
+import { ensureDirectoryExistence } from '@libs/utils'
 
 /**
  * resolve filename according to url
@@ -9,7 +10,7 @@ import { ERROR } from '@libs/constants'
  * @param url 
  * @param dest 
  */
-export function getDestinationFromURL(url: string, dest?: string) {
+export function getDestinationFromURL(url: string, dest?: string): string {
   if (!url) {
     throw new Error(ERROR.URL_IS_INVALID)
   }
@@ -18,10 +19,12 @@ export function getDestinationFromURL(url: string, dest?: string) {
   if (parsed.pathname !== '/') {
     filename = basename(parsed.pathname)
   }
+  let result = `${dest}/${filename}`
   if (!dest) {
     // if destination is not defined 
     // then defined as current dir
-    return `${process.cwd()}/${filename}`
+    result = `${process.cwd()}/${filename}`
   }
-  return `${dest}/${filename}`
+  ensureDirectoryExistence(result)
+  return result
 }
