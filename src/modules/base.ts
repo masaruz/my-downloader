@@ -3,6 +3,7 @@ import { statSync } from 'fs'
 import { IDownloader, IOptions } from '@services/interfaces'
 
 class Main implements IDownloader {
+  private _oldSize: number
 
   protected _start: boolean
   protected _completed: boolean
@@ -58,7 +59,9 @@ class Main implements IDownloader {
             this._start = true
           }
           try {
-            listener(statSync(this._dest).size)
+            const current = statSync(this._dest).size
+            listener(current - this._oldSize)
+            this._oldSize = current
           } catch (e) {
             listener(-1)
           }

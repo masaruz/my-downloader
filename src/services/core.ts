@@ -1,13 +1,9 @@
-import { MultiBar, Presets, SingleBar } from 'cli-progress'
+import * as Multiprogress from 'multi-progress'
 import { IDownloader, IOptions } from './interfaces'
 import { clean, validateURL } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
-const multibar = new MultiBar({
-  format: '{source} | {bar} | {percentage}% || {value}/{total} B',
-  clearOnComplete: false,
-  hideCursor: true,
-}, Presets.shades_grey)
+const multi = new Multiprogress(process.stderr)
 
 class Downloader {
   private _module: IDownloader[]
@@ -25,22 +21,26 @@ class Downloader {
           const mod = c.factoryCreate()
           try {
             validateURL(mod.supportedProtocols(), opt.url)
-            let b: SingleBar
+            let b: ProgressBar
             mod.download(opt)
               // when download finish
               .then(() => {
                 if (b) {
-                  b.update(mod.size())
+                  b.tick(mod.size())
                 }
                 resolve()
                 // if any error
               }).catch(e => { throw e })
             mod.on('start', () => {
-              b = multibar.create(mod.size(), 0, { source: '' })
+              b = multi.newBar(`${mod.name} [:bar] :percent :etas`, {
+                complete: '=',
+                incomplete: ' ',
+                total: mod.size(),
+              })
             })
             mod.on('progress', progress => {
               if (b) {
-                b.update(progress, { source: mod.name })
+                b.tick(progress)
               }
             })
           } catch (e) {

@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { createWriteStream, copyFileSync, statSync } from 'fs'
+import { createWriteStream, copyFileSync } from 'fs'
 
 import Base from '../base'
 
