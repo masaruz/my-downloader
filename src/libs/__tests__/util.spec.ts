@@ -63,7 +63,7 @@ test('throw error when input is invalid', () => {
 test('handle input properly', () => {
   expect(getDestinationFromURL('https://example.com/hello.png', '')).toBe(`${process.cwd()}/hello.png`)
   expect(getDestinationFromURL('https://example.com/hello.png', null)).toBe(`${process.cwd()}/hello.png`)
-  expect(getDestinationFromURL('https://example.com/hello.png', 'example_dir')).toBe(`example_dir/hello.png`)
-  expect(getDestinationFromURL('https://example.com', 'example_dir')).toBe(`example_dir/example.com`)
+  expect(getDestinationFromURL('https://example.com/hello.png', BASE_PATH)).toBe(`${BASE_PATH}/hello.png`)
+  expect(getDestinationFromURL('https://example.com', BASE_PATH)).toBe(`${BASE_PATH}/example.com`)
   expect(getDestinationFromURL('https://example.com', null)).toBe(`${process.cwd()}/example.com`)
 })
