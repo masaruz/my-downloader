@@ -13,6 +13,7 @@ const core = new Core()
 core.register(modules)
 
 if (!argv.config) {
+  // tslint:disable-next-line: no-console
   console.warn('**** Please define a --config=config_file_path, please see in input.example.json ****')
   process.exit(1)
 }

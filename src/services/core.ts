@@ -1,6 +1,8 @@
 import * as Multiprogress from 'multi-progress'
+import { copyFileSync } from 'fs-extra'
+
 import { IDownloader, IOptions } from './interfaces'
-import { clean, validateURL } from '@libs/utils'
+import { clean, validateURL, getDestinationFromURL } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 const multi = new Multiprogress(process.stderr)
@@ -52,6 +54,9 @@ class Downloader {
             mod.download(opt)
               // when download finish
               .then(() => {
+                copyFileSync(mod.dest, getDestinationFromURL(opt.url, opt.dir))
+                mod.dest = opt.dir
+                mod.completed = true
                 if (b) {
                   // for ensure 100% completed
                   b.tick(b.total)
@@ -61,9 +66,10 @@ class Downloader {
               }).catch(e => { throw e })
           } catch (e) {
             if (e.message === ERROR.PROTOCOL_NOT_SUPPORTED) {
-              return resolve()
+              resolve()
+            } else {
+              reject(e)
             }
-            return reject(e)
           }
         })))
     }, [] as Promise<void>[])
@@ -78,11 +84,13 @@ class Downloader {
 }
 
 process.on('exit', () => {
+  // tslint:disable-next-line: no-console
   console.log('program exit !')
   clean()
 })
 
 process.on('SIGINT', () => {
+  // tslint:disable-next-line: no-console
   console.log('program SIGINT !')
   process.exit(0)
 })

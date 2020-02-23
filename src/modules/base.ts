@@ -25,6 +25,22 @@ abstract class Main implements IDownloader {
     this._name = n
   }
 
+  get completed(): boolean {
+    return this._completed
+  }
+
+  set completed(c: boolean) {
+    this._completed = c
+  }
+
+  get dest(): string {
+    return this._dest
+  }
+
+  set dest(d: string) {
+    this._dest = d
+  }
+
   abstract factoryCreate(): IDownloader
 
   abstract download(options: IOptions): Promise<void>
@@ -57,7 +73,7 @@ abstract class Main implements IDownloader {
             listener(current - this._oldSize)
             this._oldSize = current
           } catch (e) {
-            listener(-1)
+            listener(0)
           }
           if (this._completed) {
             // if completed then send 100% to listener

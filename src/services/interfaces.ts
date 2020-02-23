@@ -7,6 +7,8 @@ export interface IOptions {
 
 export interface IDownloader {
   name: string
+  completed: boolean
+  dest: string
   factoryCreate(): IDownloader
   download(options: IOptions): Promise<void>
   isCompleted(): boolean

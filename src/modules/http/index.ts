@@ -8,11 +8,6 @@ import { removeFile, generateTempFilename, getDestinationFromURL } from '@libs/u
 import { ERROR } from '@libs/constants'
 
 class Main extends Base {
-  constructor() {
-    super()
-    this._size = -1
-  }
-
   supportedProtocols(): string[] {
     return ['http:', 'https:']
   }
@@ -43,15 +38,10 @@ class Main extends Base {
           }
         })
         stream.on('finish', () => {
-          copyFileSync(this._dest, getDestinationFromURL(options.url, options.dir))
-          this._dest = options.dir
-          this._completed = true
           resolve()
         })
-        stream.on('error', e => {
-          // tslint:disable-next-line: no-console
-          console.warn(`${this.name} is failed to download`)
-        })
+        // tslint:disable-next-line: no-console
+        stream.on('error', e => console.warn(`${this.name} is failed to download ${e.message}`))
       }).catch(e => {
         // remove file if something wrong happend
         removeFile(this._dest)

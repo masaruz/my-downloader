@@ -1,17 +1,15 @@
-import * as Client from 'ftp'
+import * as Client from 'ssh2-sftp-client'
 import { parse } from 'url'
-import { createWriteStream, copyFileSync, statSync } from 'fs'
+import { copyFileSync, createWriteStream } from 'fs-extra'
 
 import Base from '../base'
-
 import { IDownloader, IOptions } from '@services/interfaces'
-
 import { generateTempFilename, getDestinationFromURL } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 class Main extends Base {
   supportedProtocols(): string[] {
-    return ['ftp:']
+    return ['sftp:']
   }
 
   factoryCreate(): IDownloader {
@@ -29,27 +27,20 @@ class Main extends Base {
         this.name = options.url
         const url = parse(options.url)
         const c = new Client()
-        c.on('ready', () => {
-          c.size(url.pathname, (err, size) => {
-            if (err) throw err
-            this._size = size
-          })
-          c.get(url.pathname, (err, stream) => {
-            if (err) throw err
-            stream.once('close', () => {
-              c.end()
-              resolve()
-            })
-            stream.pipe(createWriteStream(this._dest))
-          })
-        })
-        // tslint:disable-next-line: no-console
-        c.on('error', e => console.warn(`${this.name} is failed to download ${e.message}`))
         c.connect({
           host: url.host,
-          user: options.username,
+          username: options.username,
           password: options.password,
         })
+          .then(() => c.stat(url.pathname))
+          .then(stat => this._size = stat.size)
+          .then(() => c.get(url.pathname, createWriteStream(this._dest)))
+          .then(() => {
+            c.end()
+            resolve()
+          })
+          // tslint:disable-next-line: no-console
+          .catch((e) => console.warn(`${this.name} is failed to download ${e.message}`))
       } catch (e) {
         rejects(e)
       }
