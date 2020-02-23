@@ -1,13 +1,13 @@
 import http from '..'
-import { ERROR } from '@libs/constants'
+import { ERROR, BASE } from '@libs/constants'
 import { existsSync, removeSync } from 'fs-extra'
 
-const source1 = { url: 'https://pngimage.net/wp-content/uploads/2018/05/example-of-png-8.png', dest: '.test' }
-const source2 = { url: 'https://file-examples.com/wp-content/uploads/2017/10/file_example_JPG_100kB.jpg', dest: '.test' }
+const dir = `${BASE.PATH}_http`
+const source1 = { url: 'https://pngimage.net/wp-content/uploads/2018/05/example-of-png-8.png', dest: dir }
+const source2 = { url: 'https://file-examples.com/wp-content/uploads/2017/10/file_example_JPG_100kB.jpg', dest: dir }
 
 afterAll(() => {
-  removeSync('.tmp')
-  removeSync('.test')
+  removeSync(dir)
 })
 
 test('specified url is null', () => {
@@ -16,7 +16,7 @@ test('specified url is null', () => {
 
 test('download and remove file correctly', async () => {
   await new http().download(source1)
-  expect(existsSync('.test/example-of-png-8.png')).toBeTruthy()
+  expect(existsSync(`${dir}/example-of-png-8.png`)).toBeTruthy()
 })
 
 test('download and remove files correctly', async () => {
@@ -24,11 +24,11 @@ test('download and remove files correctly', async () => {
     new http().download(source1),
     new http().download(source2),
   ])
-  expect(existsSync('.test/example-of-png-8.png')).toBeTruthy()
-  expect(existsSync('.test/file_example_JPG_100kB.jpg')).toBeTruthy()
+  expect(existsSync(`${dir}/example-of-png-8.png`)).toBeTruthy()
+  expect(existsSync(`${dir}/file_example_JPG_100kB.jpg`)).toBeTruthy()
 })
 
-test('able to get progress during download', async () => {
+test('be able to get progress during download', async () => {
   const h = new http()
   h.on('progress', progress => {
     expect(typeof progress).toBe('number')

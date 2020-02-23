@@ -25,7 +25,9 @@ class Downloader {
           mod.download(opt)
             // when download finish
             .then(() => {
-              b.update(mod.size())
+              if (b) {
+                b.update(mod.size())
+              }
               resolve()
               // if any error
             }).catch(e => { throw e })
@@ -45,7 +47,6 @@ class Downloader {
     try {
       await Promise.all(promises)
       clean()
-      console.log('done')
     } catch (e) {
       throw e
     }

@@ -36,6 +36,7 @@ export function generateTempFilename() {
 }
 
 export function clean() {
+  if (process.env.JEST_WORKER_ID) return
   removeSync(BASE.PATH)
 }
 
