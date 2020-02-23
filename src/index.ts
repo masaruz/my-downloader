@@ -6,7 +6,6 @@ import { argv } from 'yargs'
 import modules from '@modules'
 import Core from '@services/core'
 import { validateFileInput } from '@libs/utils'
-import { IOptions } from '@services/interfaces'
 
 const core = new Core()
 

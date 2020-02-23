@@ -1,10 +1,10 @@
 import * as Client from 'ssh2-sftp-client'
 import { parse } from 'url'
-import { copyFileSync, createWriteStream } from 'fs-extra'
+import { createWriteStream } from 'fs-extra'
 
 import Base from '../base'
 import { IDownloader, IOptions } from '@services/interfaces'
-import { generateTempFilename, getDestinationFromURL } from '@libs/utils'
+import { generateTempFilename } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 class Main extends Base {
@@ -24,7 +24,6 @@ class Main extends Base {
         throw new Error(ERROR.URL_IS_INVALID)
       }
       try {
-        this.name = options.url
         const url = parse(options.url)
         const c = new Client()
         c.connect({

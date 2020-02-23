@@ -1,10 +1,10 @@
 import fetch from 'node-fetch'
-import { createWriteStream, copyFileSync } from 'fs'
+import { createWriteStream } from 'fs'
 
 import Base from '../base'
 
 import { IDownloader, IOptions } from '@services/interfaces'
-import { removeFile, generateTempFilename, getDestinationFromURL } from '@libs/utils'
+import { removeFile, generateTempFilename } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 class Main extends Base {
@@ -23,7 +23,6 @@ class Main extends Base {
       if (!options.url) {
         throw new Error(ERROR.URL_IS_INVALID)
       }
-      this.name = options.url
       // request for downloading
       fetch(options.url).then(res => {
         const stream = createWriteStream(this._dest)

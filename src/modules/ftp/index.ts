@@ -1,12 +1,12 @@
 import * as Client from 'ftp'
 import { parse } from 'url'
-import { createWriteStream, copyFileSync, statSync } from 'fs'
+import { createWriteStream } from 'fs'
 
 import Base from '../base'
 
 import { IDownloader, IOptions } from '@services/interfaces'
 
-import { generateTempFilename, getDestinationFromURL } from '@libs/utils'
+import { generateTempFilename } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 class Main extends Base {
@@ -26,7 +26,6 @@ class Main extends Base {
         throw new Error(ERROR.URL_IS_INVALID)
       }
       try {
-        this.name = options.url
         const url = parse(options.url)
         const c = new Client()
         c.on('ready', () => {

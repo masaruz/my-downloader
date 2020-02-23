@@ -38,6 +38,7 @@ class Downloader {
           const mod = c.factoryCreate()
           try {
             validateURL(mod.supportedProtocols(), opt.url)
+            mod.name = opt.url
             let b: ProgressBar
             mod.on('start', () => {
               b = multi.newBar(`${mod.name} [:bar] :percent :etas`, {

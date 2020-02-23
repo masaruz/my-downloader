@@ -2,13 +2,13 @@
   "name": "my-downloader",
   "version": "1.0.0",
   "description": "This program will be used to download file from multiple sources and protocol to local disk",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "start": "node -r ts-node/register ./src/index.ts",
     "dev": "nodemon",
     "build": "tsc -p tsconfig.json",
     "test": "jest --watchAll --coverage",
-    "lint:fix": "tslint -c tslint.json -p tsconfig.json"
+    "lint:fix": "tslint -c tslint.json -p tsconfig.json --fix"
   },
   "author": "Chayanont Vongsiripat",
   "license": "MIT",
@@ -25,6 +25,7 @@
     "yargs": "^15.1.0"
   },
   "devDependencies": {
+    "@agoda-com/tslint-rules": "^1.0.4",
     "@types/fs-extra": "^8.1.0",
     "@types/ftp": "^0.3.31",
     "@types/jest": "^25.1.3",

@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@agoda-com/tslint-rules@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@agoda-com/tslint-rules/-/tslint-rules-1.0.4.tgz#3010d877414eb7d85f951561182acd3a3d13da65"
+  integrity sha512-J79nAoepEFTE5VdJVQn/d0k69VX4KBrtmlVjFgViVePGddAppqPEB/1R785EWUk/oxHlJEwq68oJmtWaNOMMQg==
+  dependencies:
+    tsutils "^2.27.2"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.8.3.tgz#33e25903d7481181534e12ec0a25f16b6fcf419e"
@@ -3862,7 +3869,7 @@ tslint@^6.0.0:
     tslib "^1.10.0"
     tsutils "^2.29.0"
 
-tsutils@^2.29.0:
+tsutils@^2.27.2, tsutils@^2.29.0:
   version "2.29.0"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.29.0.tgz#32b488501467acbedd4b85498673a0812aca0b99"
   integrity sha512-g5JVHCIJwzfISaXpXE1qvNalca5Jwob6FjI4AoPlqMusJ6ftFE7IkkFoMhVLRgK+4Kx3gkzb8UZK5t5yTTvEmA==
