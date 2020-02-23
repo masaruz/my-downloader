@@ -49,7 +49,7 @@ class Main extends Base {
           resolve()
         })
         stream.on('error', e => {
-          throw e
+          console.warn(e)
         })
       }).catch(e => {
         // remove file if something wrong happend

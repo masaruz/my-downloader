@@ -2,7 +2,7 @@ import { statSync } from 'fs'
 
 import { IDownloader, IOptions } from '@services/interfaces'
 
-class Main implements IDownloader {
+abstract class Main implements IDownloader {
   private _oldSize: number
 
   protected _start: boolean
@@ -25,13 +25,11 @@ class Main implements IDownloader {
     this._name = n
   }
 
-  factoryCreate(): IDownloader {
-    throw new Error('Method not implemented.')
-  }
+  abstract factoryCreate(): IDownloader
 
-  download(options: IOptions): Promise<void> {
-    throw new Error('Method not implemented.')
-  }
+  abstract download(options: IOptions): Promise<void>
+
+  abstract supportedProtocols(): string[]
 
   isCompleted(): boolean {
     return this._completed
@@ -39,10 +37,6 @@ class Main implements IDownloader {
 
   size(): number {
     return this._size
-  }
-
-  supportedProtocols(): string[] {
-    throw new Error('Method not implemented.')
   }
 
   on(event: 'start' | 'progress', listener: (progress?: number) => void): void {
