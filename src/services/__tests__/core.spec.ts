@@ -2,6 +2,7 @@ import modules from '@modules'
 import Core from '@services/core'
 import { ERROR, BASE } from '@libs/constants'
 import { existsSync, removeSync } from 'fs-extra'
+import testModule from '@modules/test/factory'
 
 const dir = `${BASE.PATH}_core`
 const source1 = { url: 'https://pngimage.net/wp-content/uploads/2018/05/example-of-png-8.png', dir }
@@ -12,6 +13,19 @@ const source5 = { url: 'ftp://example.example.tele2.net/1KB.zip', dir }
 
 afterAll(() => {
   removeSync(dir)
+})
+
+test('import invalid or unimplemented module', async () => {
+  const c = new Core()
+  c.register([new testModule()])
+  try {
+    await c.start([
+      { url: 'http://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4', dir: '/Users/_/Downloads' },
+    ])
+    throw new Error()
+  } catch (e) {
+    expect(e.message).toBe(ERROR.MODULE_IS_INVALID)
+  }
 })
 
 test('check all input are not supported protocols', async () => {

@@ -34,9 +34,9 @@ class Downloader {
     const promises = options.reduce((p, opt) =>
       p.concat(this._factories.map(factory => {
         return new Promise((resolve, rejects) => {
-          // create a instance
-          const dl = factory.createDownloader()
           try {
+            // create a instance
+            const dl = factory.createDownloader()
             validateURL(factory.supportedProtocols(), opt.url)
             dl.name = opt.url
             let b: ProgressBar
