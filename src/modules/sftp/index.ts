@@ -3,8 +3,7 @@ import { parse } from 'url'
 import { createWriteStream } from 'fs-extra'
 
 import Base from '../base'
-import { IDownloader, IOptions } from '@services/interfaces'
-import { generateTempFilename } from '@libs/utils'
+import { IOptions } from '@services/interfaces'
 import { ERROR } from '@libs/constants'
 
 class Main extends Base {

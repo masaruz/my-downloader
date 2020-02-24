@@ -3,7 +3,7 @@ import { createWriteStream } from 'fs'
 
 import Base from '../base'
 
-import { IDownloader, IOptions } from '@services/interfaces'
+import { IOptions } from '@services/interfaces'
 import { ensureDirectoryExistence } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
