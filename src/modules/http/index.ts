@@ -24,11 +24,8 @@ class Main extends Base {
         stream.on('finish', () => {
           resolve()
         })
-        stream.on('error', e => { rejects(e) })
-      }).catch(e => {
-        // just ignore and let another process do thier job
-        rejects(e)
-      })
+        stream.on('error', rejects)
+      }).catch(rejects)
     })
   }
 }

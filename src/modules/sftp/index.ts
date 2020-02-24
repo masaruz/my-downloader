@@ -5,6 +5,7 @@ import { createWriteStream } from 'fs-extra'
 import Base from '../base'
 import { IOptions } from '@services/interfaces'
 import { ERROR } from '@libs/constants'
+import { ensureDirectoryExistence } from '@libs/utils'
 
 class Main extends Base {
   download(options: IOptions): Promise<void> {
@@ -13,6 +14,7 @@ class Main extends Base {
         rejects(new Error(ERROR.URL_IS_INVALID))
       }
       try {
+        ensureDirectoryExistence(options.dir)
         const url = parse(options.url)
         const c = new Client()
         c.connect({
@@ -27,9 +29,8 @@ class Main extends Base {
             c.end()
             resolve()
           })
-          .catch(e => { rejects(e) })
+          .catch(rejects)
       } catch (e) {
-        // just ignore and let another process do thier job
         rejects(e)
       }
     })

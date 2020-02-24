@@ -33,7 +33,7 @@ class Downloader {
     // create each promise for each downloading 
     const promises = options.reduce((p, opt) =>
       p.concat(this._factories.map(factory => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, rejects) => {
           // create a instance
           const dl = factory.createDownloader()
           try {
@@ -77,7 +77,7 @@ class Downloader {
             if (e.message === ERROR.PROTOCOL_NOT_SUPPORTED) {
               return resolve()
             }
-            return reject(e)
+            return rejects(e)
           }
         })
       }))

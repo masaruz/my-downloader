@@ -16,6 +16,18 @@
     "dir": ".tmp-dir"
   },
   {
+    "url": "sftp://test.rebex.net/readme.txt",
+    "dir": ".tmp-dir",
+    "username": "demo",
+    "password": "password"
+  },
+  {
+    "url": "ftp://test.rebex.net/readme.txt",
+    "dir": ".tmp-dir",
+    "username": "demo",
+    "password": "password"
+  },
+  {
     "url": "http://speedtest.tele2.net/1GB.zip",
     "dir": ".tmp-dir"
   }

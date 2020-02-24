@@ -32,7 +32,7 @@ class Main extends Base {
             stream.pipe(createWriteStream(options.dir))
           })
         })
-        c.on('error', e => { rejects(e) })
+        c.on('error', rejects)
         c.connect({
           host: url.host,
           user: options.username,
