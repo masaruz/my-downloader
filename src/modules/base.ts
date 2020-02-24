@@ -41,11 +41,7 @@ abstract class Main implements IDownloader {
     this._dest = d
   }
 
-  abstract factoryCreate(): IDownloader
-
   abstract download(options: IOptions): Promise<void>
-
-  abstract supportedProtocols(): string[]
 
   isCompleted(): boolean {
     return this._completed

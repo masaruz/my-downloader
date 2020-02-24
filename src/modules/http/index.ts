@@ -8,14 +8,6 @@ import { ensureDirectoryExistence } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 class Main extends Base {
-  supportedProtocols(): string[] {
-    return ['http:', 'https:']
-  }
-
-  factoryCreate(): IDownloader {
-    return new Main()
-  }
-
   download(options: IOptions): Promise<void> {
     return new Promise((resolve, rejects) => {
       if (!options.url) {

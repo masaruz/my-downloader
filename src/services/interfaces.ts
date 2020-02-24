@@ -5,15 +5,18 @@ export interface IOptions {
   password?: string,
 }
 
+export interface IDownloaderFactory {
+  createDownloader(): IDownloader
+  supportedProtocols(): string[]
+}
+
 export interface IDownloader {
   name: string
   completed: boolean
   dest: string
-  factoryCreate(): IDownloader
   download(options: IOptions): Promise<void>
   isCompleted(): boolean
   size(): number
   on(event: 'start', listener: () => void): void
   on(event: 'progress', listener: (progress: number) => void): void
-  supportedProtocols(): string[]
 }

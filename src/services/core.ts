@@ -1,22 +1,22 @@
 import * as Multiprogress from 'multi-progress'
 import { copyFileSync } from 'fs-extra'
 
-import { IDownloader, IOptions } from './interfaces'
+import { IDownloaderFactory, IOptions } from './interfaces'
 import { clean, validateURL, getDestinationFromURL, generateTempFilename, removeFile } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 const multi = new Multiprogress(process.stderr)
 
 class Downloader {
-  private _module: IDownloader[]
+  private _factories: IDownloaderFactory[]
 
-  register(module: IDownloader[]) {
-    this._module = module
+  register(factories: IDownloaderFactory[]) {
+    this._factories = factories
   }
 
   private _checkIfSomeOfSourcesInvalid(options: IOptions[]) {
-    // merge all protocols these core support right now
-    const allSupportedProtocols = this._module.reduce((p, c) =>
+    // merge all supported protocols from all factories
+    const allSupportedProtocols = this._factories.reduce((p, c) =>
       p.concat(c.supportedProtocols()), [] as string[])
     try {
       options.forEach(opt => {
@@ -28,37 +28,38 @@ class Downloader {
   }
 
   async start(options: IOptions[]) {
+    // throw error if found some of unsupported protocols in config
     this._checkIfSomeOfSourcesInvalid(options)
+    // create each promise for each downloading 
     const promises = options.reduce((p, opt) =>
-      p.concat(this._module.map(m =>
-        // create each promise for each downloading 
+      p.concat(this._factories.map(factory =>
         new Promise((resolve, reject) => {
           // create a instance
-          const mod = m.factoryCreate()
+          const dl = factory.createDownloader()
           try {
-            validateURL(mod.supportedProtocols(), opt.url)
-            mod.name = opt.url
+            validateURL(factory.supportedProtocols(), opt.url)
+            dl.name = opt.url
             let b: ProgressBar
-            mod.on('start', () => {
-              b = multi.newBar(`${mod.name} [:bar] :percent :etas`, {
+            dl.on('start', () => {
+              b = multi.newBar(`${dl.name} [:bar] :percent :etas`, {
                 complete: '=',
                 incomplete: ' ',
-                total: mod.size(),
+                total: dl.size(),
               })
             })
-            mod.on('progress', progress => {
+            dl.on('progress', progress => {
               if (b) {
                 b.tick(progress)
               }
             })
             // temporary destination until download finish
-            mod.dest = generateTempFilename()
-            mod.download({ ...opt, dir: mod.dest })
+            dl.dest = generateTempFilename()
+            dl.download({ ...opt, dir: dl.dest })
               // when download finish
               .then(() => {
-                copyFileSync(mod.dest, getDestinationFromURL(opt.url, opt.dir))
-                mod.dest = opt.dir
-                mod.completed = true
+                copyFileSync(dl.dest, getDestinationFromURL(opt.url, opt.dir))
+                dl.dest = opt.dir
+                dl.completed = true
                 if (b) {
                   // for ensure 100% completed
                   b.tick(b.total)
@@ -67,7 +68,7 @@ class Downloader {
                 // if any error
               }).catch(e => {
                 // remove file if something wrong happend
-                removeFile(mod.dest)
+                removeFile(dl.dest)
                 throw e
               })
           } catch (e) {
