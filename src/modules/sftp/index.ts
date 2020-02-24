@@ -10,7 +10,7 @@ class Main extends Base {
   download(options: IOptions): Promise<void> {
     return new Promise((resolve, rejects) => {
       if (!options.url) {
-        throw new Error(ERROR.URL_IS_INVALID)
+        rejects(new Error(ERROR.URL_IS_INVALID))
       }
       try {
         const url = parse(options.url)
@@ -27,9 +27,9 @@ class Main extends Base {
             c.end()
             resolve()
           })
-          // tslint:disable-next-line: no-console
-          .catch((e) => console.warn(`${this.name} is failed to download ${e.message}`))
+          .catch(e => { rejects(e) })
       } catch (e) {
+        // just ignore and let another process do thier job
         rejects(e)
       }
     })

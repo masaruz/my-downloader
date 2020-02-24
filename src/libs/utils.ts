@@ -69,9 +69,16 @@ export function getDestinationFromURL(url: string, dest?: string): string {
     throw new Error(ERROR.URL_IS_INVALID)
   }
   const parsed = parse(url)
-  let filename = basename(parsed.hostname)
+  let filename = ''
+  if (parsed.protocol && parsed.protocol !== null) {
+    filename = `${parsed.protocol.substring(0, parsed.protocol.length - 1)}_${parsed.hostname}`
+  }
   if (parsed.pathname !== '/') {
-    filename = basename(parsed.pathname)
+    if (filename) {
+      filename = `${filename}_${basename(parsed.pathname)}`
+    } else {
+      filename = basename(parsed.pathname)
+    }
   }
   let result = `${dest}/${filename}`
   if (!dest) {

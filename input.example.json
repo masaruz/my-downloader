@@ -18,17 +18,5 @@
   {
     "url": "http://speedtest.tele2.net/1GB.zip",
     "dir": ".tmp-dir"
-  },
-  {
-    "url": "ftp://localhost/test.txt",
-    "username": "bob",
-    "password": "12345",
-    "dir": ".tmp-dir"
-  },
-  {
-    "url": "sftp://localhost/upload/hello.txt",
-    "username": "foo",
-    "password": "pass",
-    "dir": ".tmp-dir"
   }
 ]

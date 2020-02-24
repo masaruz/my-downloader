@@ -4,7 +4,11 @@ import { existsSync, removeSync } from 'fs-extra'
 
 const dir = `${BASE.PATH}_ftp`
 const source1 = { url: 'ftp://speedtest.tele2.net/1KB.zip', dir: `${dir}/1.zip` }
-const source2 = { url: 'ftp://speedtest.tele2.net/1MB.zip', dir: `${dir}/2.zip` }
+const source2 = { url: 'ftp://speedtest.tele2.net/100KB.zip', dir: `${dir}/2.zip` }
+const source3 = { url: 'ftp://speedtest.tele2.net/1MB.zip', dir: `${dir}/3.zip`, username: 'anonymous', password: 'anonymous' }
+const source4 = { url: 'ftp://speedtest.tele2.net/100KB.zip', dir: `${dir}/4.zip`, username: 'wrong', password: 'wrong' }
+const source5 = { url: 'ftp://example.example.tele2.net/1KB.zip', dir: `${dir}/5.zip` }
+const source6 = { url: 'speedtest.tele2.net/1MB.zip', dir: `${dir}/6.zip` }
 
 afterAll(() => {
   removeSync(dir)
@@ -23,9 +27,41 @@ test('download and remove files correctly', async () => {
   await Promise.all([
     new ftp().download(source1),
     new ftp().download(source2),
+    new ftp().download(source3),
   ])
   expect(existsSync(source1.dir)).toBeTruthy()
   expect(existsSync(source2.dir)).toBeTruthy()
+  expect(existsSync(source3.dir)).toBeTruthy()
+})
+
+test('use incorrect username/password should be failed', async () => {
+  try {
+    await new ftp().download(source4)
+    throw new Error()
+  } catch (e) {
+    expect(e.message).not.toBe('')
+  }
+  expect(existsSync(source4.dir)).toBeFalsy()
+})
+
+test('use incorrect url should be failed', async () => {
+  try {
+    await new ftp().download(source5)
+    throw new Error()
+  } catch (e) {
+    expect(e.message).not.toBe('')
+  }
+  expect(existsSync(source5.dir)).toBeFalsy()
+})
+
+test('missing protocol should be failed', async () => {
+  try {
+    await new ftp().download(source6)
+    throw new Error()
+  } catch (e) {
+    expect(e.message).not.toBe('')
+  }
+  expect(existsSync(source6.dir)).toBeFalsy()
 })
 
 test('be able to get progress during download', async () => {
@@ -43,7 +79,6 @@ test('able to get start event when download started', async () => {
   })
   await h.download(source2)
 })
-
 
 
 

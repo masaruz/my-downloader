@@ -11,7 +11,7 @@ class Main extends Base {
   download(options: IOptions): Promise<void> {
     return new Promise((resolve, rejects) => {
       if (!options.url) {
-        throw new Error(ERROR.URL_IS_INVALID)
+        rejects(new Error(ERROR.URL_IS_INVALID))
       }
       // request for downloading
       fetch(options.url).then(res => {
@@ -24,9 +24,9 @@ class Main extends Base {
         stream.on('finish', () => {
           resolve()
         })
-        // tslint:disable-next-line: no-console
-        stream.on('error', e => console.warn(`${this.name} is failed to download ${e.message}`))
+        stream.on('error', e => { rejects(e) })
       }).catch(e => {
+        // just ignore and let another process do thier job
         rejects(e)
       })
     })

@@ -32,8 +32,8 @@ class Downloader {
     this._checkIfSomeOfSourcesInvalid(options)
     // create each promise for each downloading 
     const promises = options.reduce((p, opt) =>
-      p.concat(this._factories.map(factory =>
-        new Promise((resolve, reject) => {
+      p.concat(this._factories.map(factory => {
+        return new Promise((resolve, reject) => {
           // create a instance
           const dl = factory.createDownloader()
           try {
@@ -69,16 +69,18 @@ class Downloader {
               }).catch(e => {
                 // remove file if something wrong happend
                 removeFile(dl.dest)
-                throw e
+                // tslint:disable-next-line: no-console
+                console.warn(`${dl.name} is failed to download ${e.message}`)
+                resolve()
               })
           } catch (e) {
             if (e.message === ERROR.PROTOCOL_NOT_SUPPORTED) {
-              resolve()
-            } else {
-              reject(e)
+              return resolve()
             }
+            return reject(e)
           }
-        })))
+        })
+      }))
       , [] as Promise<void>[])
     try {
       await Promise.all(promises)

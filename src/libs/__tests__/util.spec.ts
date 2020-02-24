@@ -60,10 +60,11 @@ test('throw error when input is invalid', () => {
   expect(() => getDestinationFromURL(null, null)).toThrowError(ERROR.URL_IS_INVALID)
 })
 
-test('handle input properly', () => {
-  expect(getDestinationFromURL('https://example.com/hello.png', '')).toBe(`${process.cwd()}/hello.png`)
-  expect(getDestinationFromURL('https://example.com/hello.png', null)).toBe(`${process.cwd()}/hello.png`)
-  expect(getDestinationFromURL('https://example.com/hello.png', BASE_PATH)).toBe(`${BASE_PATH}/hello.png`)
-  expect(getDestinationFromURL('https://example.com', BASE_PATH)).toBe(`${BASE_PATH}/example.com`)
-  expect(getDestinationFromURL('https://example.com', null)).toBe(`${process.cwd()}/example.com`)
+test('create name of file base on url', () => {
+  expect(getDestinationFromURL('https://example.com/hello.png', '')).toBe(`${process.cwd()}/https_example.com_hello.png`)
+  expect(getDestinationFromURL('https://example.com/hello.png', null)).toBe(`${process.cwd()}/https_example.com_hello.png`)
+  expect(getDestinationFromURL('https://example.com/hello.png', BASE_PATH)).toBe(`${BASE_PATH}/https_example.com_hello.png`)
+  expect(getDestinationFromURL('https://example.com', BASE_PATH)).toBe(`${BASE_PATH}/https_example.com`)
+  expect(getDestinationFromURL('https://example.com', null)).toBe(`${process.cwd()}/https_example.com`)
+  expect(getDestinationFromURL('example.com', null)).toBe(`${process.cwd()}/example.com`)
 })
