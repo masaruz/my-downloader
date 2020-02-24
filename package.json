@@ -8,6 +8,7 @@
     "dev": "nodemon",
     "build": "tsc -p tsconfig.json",
     "test": "jest --watchAll --coverage",
+    "test:ci": "jest --coverage",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "lint:fix": "tslint -c tslint.json -p tsconfig.json --fix"
   },

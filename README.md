@@ -4,7 +4,7 @@ For downloading from multiple sources and protocols
 
 ## Getting Started
 
-### Installing Dependencies
+### Installing dependencies
 ```
 yarn
 ```
@@ -14,7 +14,7 @@ yarn
 yarn start --config=your_path_name
 ```
 
-### Example Configuration File
+### Example configuration file
 ```
 [
   {
@@ -44,7 +44,7 @@ yarn start --config=your_path_name
 ]
 ```
 
-### Currently Protocols Supported
+### Currently protocols supported
 ```
 http
 https
@@ -52,7 +52,7 @@ ftp
 sftp
 ```
 
-### For More Implementation
+### For more conribute more protocol
 ```
 src/
   |
@@ -68,4 +68,9 @@ src/
       |- index.ts             // include your factory
 ```
 
-
+## Test
+### Some of tests might be faild because of network or endpoint of file has been changed 
+```
+yarn test  
+yarn test:ci
+```
