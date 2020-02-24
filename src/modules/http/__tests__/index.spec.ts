@@ -3,8 +3,8 @@ import { ERROR, BASE } from '@libs/constants'
 import { existsSync, removeSync } from 'fs-extra'
 
 const dir = `${BASE.PATH}_http`
-const source1 = { url: 'https://pngimage.net/wp-content/uploads/2018/05/example-of-png-8.png', dir }
-const source2 = { url: 'https://file-examples.com/wp-content/uploads/2017/10/file_example_JPG_100kB.jpg', dir }
+const source1 = { url: 'https://pngimage.net/wp-content/uploads/2018/05/example-of-png-8.png', dir: `${dir}/1.png` }
+const source2 = { url: 'https://file-examples.com/wp-content/uploads/2017/10/file_example_JPG_100kB.jpg', dir: `${dir}/2.png` }
 
 afterAll(() => {
   removeSync(dir)
@@ -16,7 +16,7 @@ test('specified url is null', () => {
 
 test('download and remove file correctly', async () => {
   await new http().download(source1)
-  expect(existsSync(`${dir}/example-of-png-8.png`)).toBeTruthy()
+  expect(existsSync(source1.dir)).toBeTruthy()
 })
 
 test('download and remove files correctly', async () => {
@@ -24,8 +24,8 @@ test('download and remove files correctly', async () => {
     new http().download(source1),
     new http().download(source2),
   ])
-  expect(existsSync(`${dir}/example-of-png-8.png`)).toBeTruthy()
-  expect(existsSync(`${dir}/file_example_JPG_100kB.jpg`)).toBeTruthy()
+  expect(existsSync(source1.dir)).toBeTruthy()
+  expect(existsSync(source2.dir)).toBeTruthy()
 }, 30000)
 
 test('be able to get progress during download', async () => {

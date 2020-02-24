@@ -2,7 +2,7 @@ import * as Multiprogress from 'multi-progress'
 import { copyFileSync } from 'fs-extra'
 
 import { IDownloader, IOptions } from './interfaces'
-import { clean, validateURL, getDestinationFromURL } from '@libs/utils'
+import { clean, validateURL, getDestinationFromURL, generateTempFilename, removeFile } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 const multi = new Multiprogress(process.stderr)
@@ -51,7 +51,9 @@ class Downloader {
                 b.tick(progress)
               }
             })
-            mod.download(opt)
+            // temporary destination until download finish
+            mod.dest = generateTempFilename()
+            mod.download({ ...opt, dir: mod.dest })
               // when download finish
               .then(() => {
                 copyFileSync(mod.dest, getDestinationFromURL(opt.url, opt.dir))
@@ -63,7 +65,11 @@ class Downloader {
                 }
                 resolve()
                 // if any error
-              }).catch(e => { throw e })
+              }).catch(e => {
+                // remove file if something wrong happend
+                removeFile(mod.dest)
+                throw e
+              })
           } catch (e) {
             if (e.message === ERROR.PROTOCOL_NOT_SUPPORTED) {
               resolve()

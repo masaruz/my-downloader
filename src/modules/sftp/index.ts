@@ -18,8 +18,6 @@ class Main extends Base {
 
   download(options: IOptions): Promise<void> {
     return new Promise((resolve, rejects) => {
-      // temporary destination until download finish
-      this._dest = generateTempFilename()
       if (!options.url) {
         throw new Error(ERROR.URL_IS_INVALID)
       }
@@ -33,7 +31,7 @@ class Main extends Base {
         })
           .then(() => c.stat(url.pathname))
           .then(stat => this._size = stat.size)
-          .then(() => c.get(url.pathname, createWriteStream(this._dest)))
+          .then(() => c.get(url.pathname, createWriteStream(options.dir)))
           .then(() => {
             c.end()
             resolve()

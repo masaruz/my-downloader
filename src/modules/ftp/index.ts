@@ -5,8 +5,7 @@ import { createWriteStream } from 'fs'
 import Base from '../base'
 
 import { IDownloader, IOptions } from '@services/interfaces'
-
-import { generateTempFilename } from '@libs/utils'
+import { ensureDirectoryExistence } from '@libs/utils'
 import { ERROR } from '@libs/constants'
 
 class Main extends Base {
@@ -20,12 +19,11 @@ class Main extends Base {
 
   download(options: IOptions): Promise<void> {
     return new Promise((resolve, rejects) => {
-      // temporary destination until download finish
-      this._dest = generateTempFilename()
       if (!options.url) {
         throw new Error(ERROR.URL_IS_INVALID)
       }
       try {
+        ensureDirectoryExistence(options.dir)
         const url = parse(options.url)
         const c = new Client()
         c.on('ready', () => {
@@ -39,7 +37,7 @@ class Main extends Base {
               c.end()
               resolve()
             })
-            stream.pipe(createWriteStream(this._dest))
+            stream.pipe(createWriteStream(options.dir))
           })
         })
         // tslint:disable-next-line: no-console

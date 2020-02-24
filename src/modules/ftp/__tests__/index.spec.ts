@@ -3,8 +3,8 @@ import { ERROR, BASE } from '@libs/constants'
 import { existsSync, removeSync } from 'fs-extra'
 
 const dir = `${BASE.PATH}_ftp`
-const source1 = { url: 'ftp://speedtest.tele2.net/1KB.zip', dir }
-const source2 = { url: 'ftp://speedtest.tele2.net/1MB.zip', dir }
+const source1 = { url: 'ftp://speedtest.tele2.net/1KB.zip', dir: `${dir}/1.zip` }
+const source2 = { url: 'ftp://speedtest.tele2.net/1MB.zip', dir: `${dir}/2.zip` }
 
 afterAll(() => {
   removeSync(dir)
@@ -16,7 +16,7 @@ test('specified url is null', () => {
 
 test('download and remove file correctly', async () => {
   await new ftp().download(source1)
-  expect(existsSync(`${dir}/1KB.zip`)).toBeTruthy()
+  expect(existsSync(source1.dir)).toBeTruthy()
 })
 
 test('download and remove files correctly', async () => {
@@ -24,8 +24,8 @@ test('download and remove files correctly', async () => {
     new ftp().download(source1),
     new ftp().download(source2),
   ])
-  expect(existsSync(`${dir}/1KB.zip`)).toBeTruthy()
-  expect(existsSync(`${dir}/1MB.zip`)).toBeTruthy()
+  expect(existsSync(source1.dir)).toBeTruthy()
+  expect(existsSync(source2.dir)).toBeTruthy()
 }, 30000)
 
 test('be able to get progress during download', async () => {
