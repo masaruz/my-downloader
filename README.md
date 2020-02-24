@@ -57,11 +57,15 @@ sftp
 src/
   |
   |- modules
+      |- example
       |
-      |- your_new_module/index.ts
+      |- your_new_module      // see in example module
+      |       |- index.ts     // extends base.ts
+      |       |- factory.ts
       |
-      |- base.ts    <-- extends this class
-      |- index.ts   <-- include module here
+      |
+      |- base.ts
+      |- index.ts             // include your factory
 ```
 
 

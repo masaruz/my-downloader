@@ -4,10 +4,11 @@ import { IDownloader, IDownloaderFactory } from '@services/interfaces'
 
 class Main implements IDownloaderFactory {
   supportedProtocols(): string[] {
-    throw new Error('Method not implemented.')
+    // if your downloader support these protocols
+    return ['http:', 'ftp:']
   }
   createDownloader(): IDownloader {
-    throw new Error('Method not implemented.')
+    return new Downloader()
   }
 }
 

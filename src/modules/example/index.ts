@@ -3,7 +3,9 @@ import { IOptions } from '@services/interfaces'
 
 class Main extends Base {
   download(options: IOptions): Promise<void> {
-    throw new Error('Method not implemented.')
+    return new Promise((resolve, reject) => {
+      // your connection go here ...
+    })
   }
 }
 
