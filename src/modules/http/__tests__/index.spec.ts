@@ -4,7 +4,7 @@ import { existsSync, removeSync } from 'fs-extra'
 
 const dir = `${BASE.PATH}_http`
 const source1 = { url: 'https://pngimage.net/wp-content/uploads/2018/05/example-of-png-8.png', dir: `${dir}/1.png` }
-const source2 = { url: 'https://file-examples.com/wp-content/uploads/2017/10/file_example_JPG_100kB.jpg', dir: `${dir}/2.png` }
+const source2 = { url: 'http://speedtest.tele2.net/1MB.zip', dir: `${dir}/2.zip` }
 
 afterAll(() => {
   removeSync(dir)
