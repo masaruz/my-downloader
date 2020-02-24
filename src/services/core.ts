@@ -29,13 +29,12 @@ class Downloader {
 
   async start(options: IOptions[]) {
     this._checkIfSomeOfSourcesInvalid(options)
-    // start pick module to resolve each url
-    const promises = this._module.reduce((p, c) => {
-      return p.concat(options.map(opt =>
+    const promises = options.reduce((p, opt) =>
+      p.concat(this._module.map(m =>
         // create each promise for each downloading 
         new Promise((resolve, reject) => {
           // create a instance
-          const mod = c.factoryCreate()
+          const mod = m.factoryCreate()
           try {
             validateURL(mod.supportedProtocols(), opt.url)
             mod.name = opt.url
@@ -73,7 +72,7 @@ class Downloader {
             }
           }
         })))
-    }, [] as Promise<void>[])
+      , [] as Promise<void>[])
     try {
       await Promise.all(promises)
     } catch (e) {
