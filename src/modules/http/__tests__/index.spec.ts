@@ -26,7 +26,7 @@ test('download and remove files correctly', async () => {
   ])
   expect(existsSync(source1.dir)).toBeTruthy()
   expect(existsSync(source2.dir)).toBeTruthy()
-}, 30000)
+})
 
 test('be able to get progress during download', async () => {
   const h = new http()

@@ -26,7 +26,7 @@ test('download and remove files correctly', async () => {
   ])
   expect(existsSync(source1.dir)).toBeTruthy()
   expect(existsSync(source2.dir)).toBeTruthy()
-}, 30000)
+})
 
 test('be able to get progress during download', async () => {
   const h = new ftp()
@@ -34,7 +34,7 @@ test('be able to get progress during download', async () => {
     expect(typeof progress).toBe('number')
   })
   await h.download(source2)
-}, 30000)
+})
 
 test('able to get start event when download started', async () => {
   const h = new ftp()
@@ -42,7 +42,7 @@ test('able to get start event when download started', async () => {
     expect(typeof h.size()).toBe('number')
   })
   await h.download(source2)
-}, 30000)
+})
 
 
 
