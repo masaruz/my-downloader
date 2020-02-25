@@ -13,6 +13,7 @@ const source5 = { url: 'ftp://example.example.tele2.net/1KB.zip', dir }
 
 afterAll(() => {
   removeSync(dir)
+  removeSync(BASE.PATH)
 })
 
 test('import invalid or unimplemented module', async () => {
