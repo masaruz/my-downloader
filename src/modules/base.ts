@@ -1,8 +1,9 @@
 import { statSync } from 'fs'
 
 import { IDownloader, IOptions } from '@services/interfaces'
+import { EVENT } from '@libs/constants'
 
-abstract class Main implements IDownloader {
+abstract class Main extends IDownloader {
   private _oldSize: number
 
   protected _start: boolean
@@ -14,7 +15,24 @@ abstract class Main implements IDownloader {
   protected _startCallback: () => void
 
   constructor() {
+    super()
     this._size = -1
+    this.setMaxListeners(10)
+    // set interval to emit event
+    const interval = setInterval(() => {
+      try {
+        const current = statSync(this._dest).size
+        this.emit(EVENT.PROGRESS, current - this._oldSize)
+        this._oldSize = current
+      } catch (e) {
+        this.emit(EVENT.PROGRESS, 0)
+      }
+    }, 100)
+    this.on(EVENT.COMPLETED, () => {
+      // if completed then send 100% to listener
+      this.emit(EVENT.PROGRESS, this.size())
+      clearInterval(interval)
+    })
   }
 
   get name(): string {
@@ -43,42 +61,8 @@ abstract class Main implements IDownloader {
 
   abstract download(options: IOptions): Promise<void>
 
-  isCompleted(): boolean {
-    return this._completed
-  }
-
   size(): number {
     return this._size
-  }
-
-  on(event: 'start' | 'progress', listener: (progress?: number) => void): void {
-    switch (event) {
-      case 'start':
-        this._startCallback = listener
-        break
-      case 'progress':
-        // set interval to call listener
-        const interval = setInterval(() => {
-          if (this._startCallback && this._size > 0 && !this._start) {
-            this._startCallback()
-            // no call twice
-            this._start = true
-          }
-          try {
-            const current = statSync(this._dest).size
-            listener(current - this._oldSize)
-            this._oldSize = current
-          } catch (e) {
-            listener(0)
-          }
-          if (this._completed) {
-            // if completed then send 100% to listener
-            listener(this._size)
-            clearInterval(interval)
-          }
-        }, 100)
-        break
-    }
   }
 }
 

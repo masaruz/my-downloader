@@ -59,11 +59,11 @@ class Downloader {
               .then(() => {
                 copyFileSync(dl.dest, getDestinationFromURL(opt.url, opt.dir))
                 dl.dest = opt.dir
-                dl.completed = true
                 if (b) {
                   // for ensure 100% completed
                   b.tick(b.total)
                 }
+                dl.emit('completed')
                 resolve()
                 // if any error
               }).catch(e => {

@@ -22,6 +22,7 @@ class Main extends Base {
           c.size(url.pathname, (e, size) => {
             if (e) rejects(e)
             this._size = size
+            this.emit('start', this._size)
           })
           c.get(url.pathname, (e, stream) => {
             if (e) rejects(e)

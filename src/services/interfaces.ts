@@ -1,3 +1,5 @@
+import { EventEmitter } from 'events'
+
 export interface IOptions {
   url: string, // source of file
   dir?: string, // destination of this file, might be local disk
@@ -10,13 +12,10 @@ export interface IDownloaderFactory {
   supportedProtocols(): string[]
 }
 
-export interface IDownloader {
+export abstract class IDownloader extends EventEmitter {
   name: string
   completed: boolean
   dest: string
-  download(options: IOptions): Promise<void>
-  isCompleted(): boolean
-  size(): number
-  on(event: 'start', listener: () => void): void
-  on(event: 'progress', listener: (progress: number) => void): void
+  abstract download(options: IOptions): Promise<void>
+  abstract size(): number
 }

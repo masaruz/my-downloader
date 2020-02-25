@@ -8,3 +8,9 @@ export const ERROR = {
 export const BASE = {
   PATH: '.tmp',
 }
+
+export const EVENT = {
+  PROGRESS: 'progress',
+  START: 'start',
+  COMPLETED: 'completed',
+}

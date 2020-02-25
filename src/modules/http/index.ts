@@ -19,6 +19,7 @@ class Main extends Base {
         const stream = createWriteStream(options.dir)
         // read size from header
         this._size = parseInt(res.headers.get('content-length'), 10)
+        this.emit('start', this._size)
         // start write stream
         res.body.pipe(stream)
         stream.on('finish', () => {

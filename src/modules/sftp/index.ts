@@ -23,7 +23,10 @@ class Main extends Base {
           password: options.password,
         })
           .then(() => c.stat(url.pathname))
-          .then(stat => this._size = stat.size)
+          .then(stat => {
+            this._size = stat.size
+            this.emit('start', this._size)
+          })
           .then(() => c.get(url.pathname, createWriteStream(options.dir)))
           .then(() => {
             c.end()
