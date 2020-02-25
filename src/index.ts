@@ -18,5 +18,7 @@ if (!argv.config) {
 }
 
 const config = validateFileInput(argv.config as string)
-core.start(config)
+core.start(config).then(() => {
+  process.exit()
+})
 

@@ -91,7 +91,6 @@ class Downloader {
     }
     // tslint:disable-next-line: no-console
     console.log('All downloads are done')
-    process.exit(0)
   }
 }
 
