@@ -6,13 +6,9 @@ import { EVENT } from '@libs/constants'
 abstract class Main extends IDownloader {
   private _oldSize: number
 
-  protected _start: boolean
-  protected _completed: boolean
   protected _size: number
   protected _dest: string
   protected _name: string
-
-  protected _startCallback: () => void
 
   constructor() {
     super()
@@ -41,14 +37,6 @@ abstract class Main extends IDownloader {
 
   set name(n: string) {
     this._name = n
-  }
-
-  get completed(): boolean {
-    return this._completed
-  }
-
-  set completed(c: boolean) {
-    this._completed = c
   }
 
   get dest(): string {

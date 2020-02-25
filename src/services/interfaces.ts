@@ -14,7 +14,6 @@ export interface IDownloaderFactory {
 
 export abstract class IDownloader extends EventEmitter {
   name: string
-  completed: boolean
   dest: string
   abstract download(options: IOptions): Promise<void>
   abstract size(): number
