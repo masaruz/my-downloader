@@ -6,7 +6,7 @@ const dir = `${BASE.PATH}_http`
 const source1 = { url: 'https://pngimage.net/wp-content/uploads/2018/05/example-of-png-8.png', dir: `${dir}/1.png` }
 const source2 = { url: 'http://speedtest.tele2.net/1KB.zip', dir: `${dir}/2.zip` }
 const source3 = { url: 'http://speedtest.tele2.net/100KB.zip', dir: `${dir}/3.zip` }
-const source4 = { url: 'http://example.example.net/1MB.zip', dir: `${dir}/4.zip` }
+const source4 = { url: 'http://example.example.net/512.zip', dir: `${dir}/4.zip` }
 const source5 = { url: 'speedtest.tele2.net/1MB.zip', dir: `${dir}/5.zip` }
 
 afterAll(() => {

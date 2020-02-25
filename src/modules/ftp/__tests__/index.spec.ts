@@ -5,7 +5,7 @@ import { existsSync, removeSync } from 'fs-extra'
 const dir = `${BASE.PATH}_ftp`
 const source1 = { url: 'ftp://speedtest.tele2.net/1KB.zip', dir: `${dir}/1.zip` }
 const source2 = { url: 'ftp://speedtest.tele2.net/100KB.zip', dir: `${dir}/2.zip` }
-const source3 = { url: 'ftp://speedtest.tele2.net/1MB.zip', dir: `${dir}/3.zip`, username: 'anonymous', password: 'anonymous' }
+const source3 = { url: 'ftp://speedtest.tele2.net/512KB.zip', dir: `${dir}/3.zip`, username: 'anonymous', password: 'anonymous' }
 const source4 = { url: 'ftp://speedtest.tele2.net/100KB.zip', dir: `${dir}/4.zip`, username: 'wrong', password: 'wrong' }
 const source5 = { url: 'ftp://example.example.tele2.net/1KB.zip', dir: `${dir}/5.zip` }
 const source6 = { url: 'speedtest.tele2.net/1MB.zip', dir: `${dir}/6.zip` }
