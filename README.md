@@ -13,7 +13,12 @@ yarn
 ```
 yarn start --config=your_path_name
 ```
-
+### Or use my example file
+```
+yarn start --config=input.eample.json
+```
+### ** Please use powershell if you are windows user for progress bar **
+#
 ### Example configuration file
 ```
 [
@@ -43,7 +48,7 @@ yarn start --config=your_path_name
   }
 ]
 ```
-
+#
 ### Currently protocols supported
 ```
 http
@@ -67,7 +72,7 @@ src/
       |- base.ts
       |- index.ts             // include your factory
 ```
-
+#
 ## Test
 ### Some of tests might be faild because of network or endpoint of file has been changed 
 ```
