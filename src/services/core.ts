@@ -1,5 +1,6 @@
 import * as Multiprogress from 'multi-progress'
 import { copyFileSync } from 'fs-extra'
+import { createInterface } from 'readline'
 
 import { IDownloaderFactory, IOptions } from './interfaces'
 import { clean, validateURL, getDestinationFromURL, generateTempFilename, removeFile } from '@libs/utils'
@@ -103,7 +104,26 @@ process.on('exit', () => {
 process.on('SIGINT', () => {
   // tslint:disable-next-line: no-console
   console.log('program SIGINT !')
-  process.exit(0)
+  process.exit()
 })
+
+process.on('uncaughtException', e => {
+  // tslint:disable-next-line: no-console
+  console.log('Uncaught Exception...')
+  // tslint:disable-next-line: no-console
+  console.log(e.stack)
+  process.exit()
+})
+
+if (process.platform === 'win32') {
+  const rl = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  })
+
+  rl.on('SIGINT', () => {
+    process.exit()
+  })
+}
 
 export default Downloader
